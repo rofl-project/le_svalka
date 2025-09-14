@@ -5,6 +5,10 @@ import "fmt"
 const USD_TO_EUR = 0.9
 const USD_TO_RUB = 30.0
 
+const RUB = "rub"
+const EUR = "eur"
+const USD = "usd"
+
 // Сделать считывание ввода пользователя в виде отдельной функции
 // Сделать пустую функцию расчета, которая будет принимать 1 число и 2 валюты - исходная и целевая
 
@@ -32,24 +36,40 @@ func convertEurToRub(amount float64) float64 {
 	return convertUsdToRub(convertEurToUsd(amount))
 }
 
-func main() {
+func getCurrency(param string) string {
+	var currency string = ""
+	fmt.Printf("Enter %s currency: usd / rub / eur \n", param)
 
+	for {
+		fmt.Scan(&currency)
+
+		if currency == RUB || currency == USD || currency == EUR {
+			break
+		}
+
+		fmt.Printf("Enter CorrectValue!!! \n%s currency: usd / rub / eur\n", param)
+	}
+
+	return currency
+}
+
+func getInput() (string, string, float64) {
 	var amount float64 = 0
-	var fromCurrency string = ""
-	var toCurrency string = ""
-	var convertResult float64 = 0
-	const RUB = "rub"
-	const EUR = "eur"
-	const USD = "usd"
+	var fromCurrency string = getCurrency("FROM")
+	var toCurrency string = getCurrency("TO")
 
-	fmt.Println("Enter FROM currency: usd / rub / eur")
-	fmt.Scan(&fromCurrency)
-
-	fmt.Println("Enter TO currency: usd / rub / eur")
-	fmt.Scan(&toCurrency)
-
-	fmt.Println("Enter AMOUNT of currency: ")
+	fmt.Println("Enter amount: ")
 	fmt.Scan(&amount)
+
+	return fromCurrency, toCurrency, amount
+}
+
+func uniConvert(fromCurrency string, toCurrency string, amount float64) float64 {
+
+	// var amount float64 = 0
+	// var fromCurrency string = ""
+	// var toCurrency string = ""
+	var convertResult float64 = 0
 
 	switch fromCurrency {
 	case USD:
@@ -81,7 +101,33 @@ func main() {
 		}
 	}
 
-	fmt.Printf("Cobvert from %s to %s is equal: %.2f \n", fromCurrency, toCurrency, convertResult)
+	// fmt.Printf("Cobvert from %s to %s is equal: %.2f \n", fromCurrency, toCurrency, convertResult)
+
+	return convertResult
+}
+
+func main() {
+
+	// var amount float64 = 0
+	// var fromCurrency string = ""
+	// var toCurrency string = ""
+	// var convertResult float64 = 0
+
+	fromCurrency, toCurrency, amount := getInput()
+	convertResult := uniConvert(fromCurrency, toCurrency, amount)
+
+	fmt.Printf("Convert from %s to %s is equal: %.2f \n", fromCurrency, toCurrency, convertResult)
+
+	// uniConvert
+
+	// fmt.Println("Enter FROM currency: usd / rub / eur")
+	// fmt.Scan(&fromCurrency)
+
+	// fmt.Println("Enter TO currency: usd / rub / eur")
+	// fmt.Scan(&toCurrency)
+
+	// fmt.Println("Enter AMOUNT of currency: ")
+	// fmt.Scan(&amount)
 
 	// var dollars = 100.0
 	// var euro = 500.0
